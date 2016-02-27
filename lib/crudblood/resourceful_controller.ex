@@ -1,37 +1,33 @@
 defmodule Crudblood.ResourcefulController do
   defmacro __using__(_) do
     quote do
-      def action(conn, _) do
-        apply(__MODULE__, action_name(conn), [conn,
-                                              conn.params,
-                                              Guardian.Plug.current_resource(conn)])
+      def index(conn, params) do
+        index_resource(conn, params)
       end
 
-      def index(conn, params, current_user) do
-        index_resource(conn, params, current_user)
+      def create(conn, params) do
+        create_resource(conn, params)
       end
 
-      def create(conn, params, current_user) do
-        create_resource(conn, params, current_user)
+      def show(conn, %{"id" => id}) do
+        show_resource(conn, id)
       end
 
-      def show(conn, %{"id" => id}, current_user) do
-        show_resource(conn, id, current_user)
+      def update(conn, params) do
+        update_resource(conn, resource_params(conn), params["id"])
       end
 
-      def update(conn, params, current_user) do
-        update_resource(conn, resource_params(conn), params["id"], current_user)
+      def delete(conn, %{"id" => id}) do
+        delete_resource(conn, id)
       end
 
-      def delete(conn, %{"id" => id}, current_user) do
-        delete_resource(conn, id, current_user)
-      end
+      defp create_resource(conn, _params, clauses \\ []) do
+        current_resource = get_current_resource(conn)
 
-      defp create_resource(conn, _params, current_user, clauses \\ []) do
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
 
-        case {api_model(conn).create(current_user, resource_params(conn)), on_success, on_failure} do
+        case {api_model(conn).create(current_resource, resource_params(conn)), on_success, on_failure} do
           {{:error, :forbidden}, _, nil} ->
             conn
             |> send_resp(:forbidden, "")
@@ -54,11 +50,13 @@ defmodule Crudblood.ResourcefulController do
         end
       end
 
-      defp index_resource(conn, current_user, params, clauses \\ []) do
+      defp index_resource(conn, params, clauses \\ []) do
+        current_resource = get_current_resource(conn)
+
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
 
-        case {api_model(conn).read_all(current_user, params), on_success, on_failure} do
+        case {api_model(conn).read_all(current_resource, params), on_success, on_failure} do
           {{:error, :forbidden}, _, nil} ->
             conn
             |> send_resp(:forbidden, "")
@@ -72,11 +70,13 @@ defmodule Crudblood.ResourcefulController do
         end
       end
 
-      defp show_resource(conn, id, current_user, clauses \\ []) do
+      defp show_resource(conn, id, clauses \\ []) do
+        current_resource = Crudblood.config(%{}).current_resource_method(conn)
+
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
 
-        case {api_model(conn).read(current_user, id), on_success, on_failure} do
+        case {api_model(conn).read(current_resource, id), on_success, on_failure} do
           {{:error, :forbidden}, _, nil} ->
             conn
             |> send_resp(:forbidden, "")
@@ -90,11 +90,13 @@ defmodule Crudblood.ResourcefulController do
         end
       end
 
-      defp update_resource(conn, resource_params, id, current_user, clauses \\ []) do
+      defp update_resource(conn, resource_params, id, clauses \\ []) do
+        current_resource = get_current_resource(conn)
+
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
 
-        case {api_model(conn).update(current_user, resource_params, id), on_success, on_failure} do
+        case {api_model(conn).update(current_resource, resource_params, id), on_success, on_failure} do
           {{:error, :forbidden}, _, nil} ->
             conn
             |> send_resp(:forbidden, "")
@@ -114,11 +116,13 @@ defmodule Crudblood.ResourcefulController do
         end
       end
 
-      defp delete_resource(conn, id, current_user, clauses \\ []) do
+      defp delete_resource(conn, id, clauses \\ []) do
+        current_resource = get_current_resource(conn)
+
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
 
-        case {api_model(conn).destroy(current_user, id), on_success, on_failure} do
+        case {api_model(conn).destroy(current_resource, id), on_success, on_failure} do
           {{:error, :forbidden}, _, nil} ->
             conn
             |> send_resp(:forbidden, "")
@@ -170,6 +174,10 @@ defmodule Crudblood.ResourcefulController do
 
       defp created_resource_path(conn, created_resource) do
         [conn.request_path, created_resource.id] |> Enum.join("/")
+      end
+
+      defp get_current_resource(conn) do
+        IO.puts "get_current_resource not implemented!"
       end
     end
   end
