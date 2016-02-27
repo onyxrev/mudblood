@@ -44,7 +44,7 @@ defmodule Crudblood.Mixfile do
     [
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Dan Connor Consulting"],
-      licenses: ["MIT"],
+      licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/onyxrev/crudblood"}
     ]
   end
