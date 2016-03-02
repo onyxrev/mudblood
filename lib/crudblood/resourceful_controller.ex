@@ -71,7 +71,7 @@ defmodule Crudblood.ResourcefulController do
       end
 
       defp show_resource(conn, id, clauses \\ []) do
-        current_resource = Crudblood.config(%{}).current_resource_method(conn)
+        current_resource = get_current_resource(conn)
 
         on_success = Keyword.get(clauses, :success, nil)
         on_failure = Keyword.get(clauses, :failure, nil)
