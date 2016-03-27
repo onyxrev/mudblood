@@ -100,8 +100,6 @@ You will need to build an API Model for each of your models. Fortunately you pro
 
 ```elixir
 defmodule MyApp.UserApiModel do
-  @model MyApp.User
-
   use Crudblood.ApiModel
 end
 ```
@@ -110,8 +108,6 @@ If you want to override any of the API Model default CRUD methods you can do so 
 
 ```elixir
 defmodule MyApp.UserApiModel do
-  @model MyApp.User
-
   use Crudblood.ApiModel
 
   # I've got a custom create method!
@@ -127,6 +123,14 @@ defmodule MyApp.UserApiModel do
          false -> forbidden
        end
   end
+end
+```
+
+Crudblood ApiModel tries to guess your data model name from the name of the ApiModel (example: MyApp.UserApiModel translates to MyApp.User), but if your api models or models don't follow that pattern (I, for example, version my api models like MyApp.V1.UserApiModel), you can specify the model to use by setting @model:
+
+```elixir
+defmodule MyApp.UserApiModel do
+  @model MyApp.User
 end
 ```
 
