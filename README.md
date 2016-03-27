@@ -15,7 +15,7 @@ The "resourceful controller" module provides convention-based CRUD actions. It m
 API models provide a common interface for CRUD operations against models. Why do we need API models when we have regular Ecto models? The API models handle authorization checks. They also provides a standardized way to do work normally done in controllers. In an ideal world controllers just handle routing and responding to requests. API models are also easier to unit test than controllers because the code lives outside of the request context.
 
 ### Crudblood.Model
-The model module just provides some getter methods for configuration variables needed by the API Model and Resourceful Controller modules. Namely you specify the table, the name of the model, and the plural name of the model. These configurations help keep the other modules DRY and able to respond to the naming conventions used elsewhere in your code.
+The model module just provides some convenience methods (table, name, plural_name) for working conventionally with parameters as needed by the API Model and Resourceful Controller modules.
 
 ## Configuration
 
