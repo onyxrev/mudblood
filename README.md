@@ -67,11 +67,19 @@ end
 This example uses pattern matching and/or boolean logic to return whether an operation is allowed (true) or forbidden (false).
 
 ### Controllers
-You'll also need to tell Crudblood what API Model to use for the Resourceful Controller. Here I'm configuring it to use MyApp.UserApiModel and I also use Crudblood.ResourcefulController:
+You'll need to use Crudblood.ResourcefulController.
 
 ```elixir
 defmodule MyApp.UserController do
-  @api_model MyApp.UserApiModel
+  use Crudblood.ResourcefulController
+end
+```
+
+Crudblood.ResourcefulController will try to guess the name of your api model from the name of the controller (example: MyApp.UserController translates to MyApp.UserApiModel). If your api model or controller doesn't follow that convention, you can specify the api model to use by setting @api_model:
+
+```elixir
+defmodule MyApp.UserController do
+  @api_model MyApp.SomeApiModel
 
   use Crudblood.ResourcefulController
 end
@@ -140,16 +148,9 @@ So why would you do all of this? Well, your business logic will probably mostly 
 
 ```elixir
 defmodule MyApp.ProfileController do
-  @api_model MyApp.ProfileApiModel
-
   use MyApp.Web, :controller
   use Crudblood.ResourcefulController
 end
 ```
 
 And you can test your business logic using your API Models instead of with controller specs.
-
------------------
-
-## The Future
-I'd really like to reduce the amount of configuration necessary. These modules are based on similar work I've done with Rails. Rails provides some really nice interfaces for making this sort of convention-based logic easy... stuff like pluralization and looking up resources in controller contexts. If folks can help me pull these sorts of features out of Phoenix Framework that'd be fantastic. But Phoenix is much simpler than Rails. That's a good thing... but it does mean we have to do a little more work to get magic to happen.

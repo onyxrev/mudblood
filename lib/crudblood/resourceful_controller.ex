@@ -137,7 +137,10 @@ defmodule Crudblood.ResourcefulController do
       end
 
       defp api_model(conn) do
-        Code.eval_string(@api_model) |> elem(0)
+        @api_model || "#{__MODULE__}"
+        |> String.replace(~r/^(.*)Controller/, "\\1ApiModel")
+        |> Code.eval_string
+        |> elem(0)
       end
 
       defp model(conn) do
