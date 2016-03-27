@@ -30,14 +30,10 @@ config :crudblood, Crudblood,
 ```
 
 ### Models
-Configure the Crudblood helper methods and use the Crudblood.Model module like so:
+Use the Crudblood.Model module like so:
 
 ```elixir
 defmodule MyApp.User do
-  @table "users"
-  @name "user"
-  @plural_name "users"
-
   use Crudblood.Model
 end
 ```
