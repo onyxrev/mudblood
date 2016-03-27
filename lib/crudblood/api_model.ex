@@ -22,7 +22,7 @@ defmodule Crudblood.ApiModel do
                # FIXME: this is janky as hell
                {:ok,
                 # TODO: support more params like limit and offset
-                __model.table
+                __model.__table
                 |> Query.table()
                 |> Query.filter(params)
                 |> config.repo.run

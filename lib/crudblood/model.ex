@@ -1,11 +1,11 @@
 defmodule Crudblood.Model do
   defmacro __using__(_) do
     quote do
-      def table do
+      def __table do
         __MODULE__.__schema__(:source)
       end
 
-      def name do
+      def __name do
         "#{__MODULE__}"
         |> String.split(".")
         |> List.last                                          # take the "AdminUser" from "MyApp.AdminUser"
@@ -15,8 +15,8 @@ defmodule Crudblood.Model do
         |> String.downcase
       end
 
-      def plural_name do
-        table
+      def __plural_name do
+        __table
       end
     end
   end
