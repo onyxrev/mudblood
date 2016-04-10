@@ -1,6 +1,8 @@
 defmodule Crudblood.ApiModel do
   defmacro __using__(_) do
     quote do
+      import Ecto.Query
+
       def create(current_user, params) do
         config = Crudblood.config(%{})
         changeset = __changeset(params, __empty_model)
@@ -21,12 +23,9 @@ defmodule Crudblood.ApiModel do
              true  ->
                # FIXME: this is janky as hell
                {:ok,
-                # TODO: support more params like limit and offset
-                __model.__table
-                |> Query.table()
-                |> Query.filter(params)
-                |> config.repo.run
-                |> Enum.fetch(0)
+                params
+                |> params_to_query
+                |> config.repo.all
                }
              false ->
                __forbidden
@@ -68,6 +67,19 @@ defmodule Crudblood.ApiModel do
              true  -> {:ok, config.repo.delete(resource)}
              false -> __forbidden
            end
+      end
+
+      # if you don't use Ecto you can override this to build a query
+      # for a different repo
+      defp params_to_query(params) do
+        schema_fields = __model.__schema__(:fields)
+
+        filters = for {key, val} <- params, into: [], do: {String.to_atom(key), val}
+
+        # only filter on schema fields
+        filters = Keyword.take(filters, schema_fields)
+
+        from t in __model, where: ^filters
       end
 
       defp __forbidden do
