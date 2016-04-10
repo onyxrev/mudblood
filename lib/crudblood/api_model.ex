@@ -99,8 +99,8 @@ defmodule Crudblood.ApiModel do
       # (example: MyApp.SomeThing.UserApiModel would evaluate to
       # MyApp.SomeThing.User)
       defp __model do
-        @model || "#{__MODULE__}"
-        |> String.replace(~r/^(.*)\.(.*)ApiModel$/, "\\1.\\2")
+        @model || to_string(__MODULE__)
+        |> Phoenix.Naming.unsuffix("ApiModel")
         |> Code.eval_string
         |> elem(0)
       end

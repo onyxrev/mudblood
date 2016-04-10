@@ -137,8 +137,7 @@ defmodule Crudblood.ResourcefulController do
       end
 
       defp __api_model(conn) do
-        @api_model || "#{__MODULE__}"
-        |> String.replace(~r/^(.*)Controller/, "\\1ApiModel")
+        Phoenix.Naming.unsuffix(@api_model || "#{__MODULE__}", "Controller") <> "ApiModel"
         |> Code.eval_string
         |> elem(0)
       end
@@ -159,7 +158,7 @@ defmodule Crudblood.ResourcefulController do
         conn.private[:phoenix_controller]
         |> Module.split
         |> List.last
-        |> String.replace("Controller", "")
+        |> Phoenix.Naming.unsuffix("Controller")
       end
 
       defp __resource_params(conn) do
@@ -171,7 +170,6 @@ defmodule Crudblood.ResourcefulController do
       end
 
       defp __render_plural_params(conn, resources) do
-        # FIXME: is there some better way to pluralize a model name?
         Map.put(%{}, __model(conn).__plural_name |> String.to_atom, resources)
       end
 

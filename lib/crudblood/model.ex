@@ -8,11 +8,8 @@ defmodule Crudblood.Model do
       def __name do
         "#{__MODULE__}"
         |> String.split(".")
-        |> List.last                                          # take the "AdminUser" from "MyApp.AdminUser"
-        |> String.replace(~r/([A-Z]+)([A-Z][a-z])/,"\\1_\\2") # ... and snake case it (ex: "admin_user")
-        |> String.replace(~r/([a-z\d])([A-Z])/,"\\1_\\2")
-        |> String.replace("-", "_")
-        |> String.downcase
+        |> List.last # take the "AdminUser" from "MyApp.AdminUser"
+        |> Phoenix.Naming.underscore
       end
 
       def __plural_name do
