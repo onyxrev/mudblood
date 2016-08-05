@@ -4,7 +4,7 @@ defmodule Crudblood.Mixfile do
   def project do
     [
       app: :crudblood,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env),
       description: description,
@@ -35,8 +35,8 @@ defmodule Crudblood.Mixfile do
 
   defp deps do
     [
-      {:ecto, "~> 1.0"},
-      {:phoenix, "~> 1.1.0"}
+      {:ecto, "~> 1.1.9"},
+      {:phoenix, "~> 1.2.0"}
     ]
   end
 
