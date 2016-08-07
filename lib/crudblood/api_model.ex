@@ -21,7 +21,14 @@ defmodule Crudblood.ApiModel do
         __can?(__model, current_user, :read_all)
         |> case do
              true  ->
+               # TODO: cache this somewhere
+               # make sure we only atomize and search on the actual
+               # schema fields
+               schema_fields = __model.__schema__(:fields)
+               |> Enum.map(fn(k) -> Atom.to_string(k) end)
+
                filtered_params = params
+               |> Map.take(schema_fields)
                |> Enum.map(fn {k, v} -> {__atomize(k), v} end)
 
                # FIXME: this is janky as hell
