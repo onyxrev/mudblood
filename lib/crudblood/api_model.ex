@@ -1,6 +1,8 @@
 defmodule Crudblood.ApiModel do
   defmacro __using__(_) do
     quote do
+      import Ecto.Query
+
       def create(current_user, params) do
         config = Crudblood.config(%{})
         changeset = __changeset(params, __empty_model)
@@ -19,15 +21,14 @@ defmodule Crudblood.ApiModel do
         __can?(__model, current_user, :read_all)
         |> case do
              true  ->
+               filtered_params = params
+               |> Enum.map(fn {k, v} -> {__atomize(k), v} end)
+
                # FIXME: this is janky as hell
-               {:ok,
-                # TODO: support more params like limit and offset
-                __model.__table
-                |> Query.table()
-                |> Query.filter(params)
-                |> config.repo.run
-                |> Enum.fetch(0)
-               }
+               result = Ecto.Query.from(__model, where: ^filtered_params)
+               |> config.repo.all
+
+               {:ok, result}
              false ->
                __forbidden
            end
@@ -101,6 +102,14 @@ defmodule Crudblood.ApiModel do
         else
           true
         end
+      end
+
+      defp __atomize(k) when is_binary(k) do
+        String.to_atom(k)
+      end
+
+      defp __atomize(k) when is_atom(k) do
+        k
       end
     end
   end
