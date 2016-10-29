@@ -4,7 +4,7 @@ defmodule Mudblood.Mixfile do
   def project do
     [
       app: :mudblood,
-      version: "0.0.3",
+      version: "0.0.4",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env),
       description: description,
