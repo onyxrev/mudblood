@@ -1,4 +1,4 @@
-defmodule Crudblood.Model do
+defmodule Mudblood.Model do
   defmacro __using__(_) do
     quote do
       def __table do

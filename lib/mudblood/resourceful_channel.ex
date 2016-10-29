@@ -1,4 +1,4 @@
-defmodule Crudblood.ResourcefulChannel do
+defmodule Mudblood.ResourcefulChannel do
   defmacro __using__(_) do
     quote do
       defp __create_resource(api_model, payload, socket, clauses \\ []) do
@@ -11,7 +11,7 @@ defmodule Crudblood.ResourcefulChannel do
           {{:error, :forbidden}, _, nil} ->
             {:reply, {:error, %{reason: "unauthorized"}}, socket}
           {{:error, changeset}, _, nil} ->
-            changeset_view = Crudblood.config(%{}).changeset_view
+            changeset_view = Mudblood.config(%{}).changeset_view
 
             {:reply, {:error, Map.put(changeset_view.render("error.json", changeset: changeset), :reason, "invalid")}, socket}
           {{:ok, resource}, nil, _} ->
@@ -69,7 +69,7 @@ defmodule Crudblood.ResourcefulChannel do
           {{:error, :forbidden}, _, nil} ->
             {:reply, {:error, %{reason: "unauthorized"}}, socket}
           {{:error, changeset}, _, nil} ->
-            changeset_view = Crudblood.config(%{}).changeset_view
+            changeset_view = Mudblood.config(%{}).changeset_view
 
             {:reply, {:error, Map.put(changeset_view.render("error.json", changeset: changeset), :reason, "invalid")}, socket}
           {{:ok, resource}, nil, _} ->

@@ -8,5 +8,5 @@ use Mix.Config
 # if you want to provide default values for your application for third-
 # party users, it should be done in your mix.exs file.
 
-config :crudblood, Crudblood,
-  repo: Crudblood.Test.Repo
+config :mudblood, Mudblood,
+  repo: Mudblood.Test.Repo

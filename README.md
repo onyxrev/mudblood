@@ -1,63 +1,63 @@
-# Crudblood
+# Mudblood
 
-Crudblood is a collection of modules designed to make super dry, convention-based CRUD APIs with Phoenix Framework.
+Mudblood is a collection of modules designed to make super dry, convention-based CRUD APIs with Phoenix Framework.
 
-*Crudblood is currently a work in progress and is not intended for production use.*
+*Mudblood is currently a work in progress and is not intended for production use.*
 
 ## Parts
 
-Crudblood is organized into three parts:
+Mudblood is organized into three parts:
 
-### Crudblood.ResourcefulController
+### Mudblood.ResourcefulController
 The "resourceful controller" module provides convention-based CRUD actions. It mostly handles requests and responses and delegates most of the heavy lifting to...
 
-### Crudblood.APIModel
+### Mudblood.APIModel
 API models provide a common interface for CRUD operations against models. Why do we need API models when we have regular Ecto models? The API models handle authorization checks. They also provides a standardized way to do work normally done in controllers. In an ideal world controllers just handle routing and responding to requests. API models are also easier to unit test than controllers because the code lives outside of the request context.
 
-### Crudblood.Model
+### Mudblood.Model
 The model module just provides some convenience methods (table, name, plural_name) for working conventionally with parameters as needed by the API Model and Resourceful Controller modules.
 
 ## Configuration
 
 ### config/config.exs
-You'll need to configure Crudblood in your `config/config.exs` file with the following options:
+You'll need to configure Mudblood in your `config/config.exs` file with the following options:
 
 ```elixir
-config :crudblood, Crudblood,
+config :mudblood, Mudblood,
   app: MyApp,
   changeset_view: MyApp.ChangesetView,
   repo: MyApp.Repo
 ```
 
 ### Models
-Use the `Crudblood.Model` module like so:
+Use the `Mudblood.Model` module like so:
 
 ```elixir
 defmodule MyApp.User do
-  use Crudblood.Model
+  use Mudblood.Model
 end
 ```
 
 ### Controllers
-You'll need to use `Crudblood.ResourcefulController`.
+You'll need to use `Mudblood.ResourcefulController`.
 
 ```elixir
 defmodule MyApp.UserController do
-  use Crudblood.ResourcefulController
+  use Mudblood.ResourcefulController
 end
 ```
 
-`Crudblood.ResourcefulController` will try to guess the name of your api model from the name of the controller (example: `MyApp.UserController` translates to `MyApp.UserApiModel`). If your api model or controller doesn't follow that convention, you can specify the api model to use by setting `@api_model`:
+`Mudblood.ResourcefulController` will try to guess the name of your api model from the name of the controller (example: `MyApp.UserController` translates to `MyApp.UserApiModel`). If your api model or controller doesn't follow that convention, you can specify the api model to use by setting `@api_model`:
 
 ```elixir
 defmodule MyApp.UserController do
   @api_model MyApp.SomeApiModel
 
-  use Crudblood.ResourcefulController
+  use Mudblood.ResourcefulController
 end
 ```
 
-You'll need to configure a method to tell Crudblood where it can find the current resource in the connection (the current user, etc). I like to add this method for all my controllers by adding the following method that delegates to the Guardian module to `web/web.ex`:
+You'll need to configure a method to tell Mudblood where it can find the current resource in the connection (the current user, etc). I like to add this method for all my controllers by adding the following method that delegates to the Guardian module to `web/web.ex`:
 
 ```elixir
 defmodule MyApp.Web do
@@ -80,7 +80,7 @@ You will need to build an API Model for each of your models. Fortunately you pro
 
 ```elixir
 defmodule MyApp.UserApiModel do
-  use Crudblood.ApiModel
+  use Mudblood.ApiModel
 end
 ```
 
@@ -123,7 +123,7 @@ If you want to override any of the API Model default CRUD methods you can do so 
 
 ```elixir
 defmodule MyApp.UserApiModel do
-  use Crudblood.ApiModel
+  use Mudblood.ApiModel
 
   # I've got a custom create method!
   def create(current_user, params) do
@@ -141,7 +141,7 @@ defmodule MyApp.UserApiModel do
 end
 ```
 
-`Crudblood.ApiModel` tries to guess your data model name from the name of the ApiModel (example: `MyApp.UserApiModel` translates to `MyApp.User`), but if your api models or models don't follow that pattern (I, for example, version my api models like `MyApp.V1.UserApiModel`), you can specify the model to use by setting `@model`:
+`Mudblood.ApiModel` tries to guess your data model name from the name of the ApiModel (example: `MyApp.UserApiModel` translates to `MyApp.User`), but if your api models or models don't follow that pattern (I, for example, version my api models like `MyApp.V1.UserApiModel`), you can specify the model to use by setting `@model`:
 
 ```elixir
 defmodule MyApp.UserApiModel do
@@ -156,7 +156,7 @@ So why would you do all of this? Well, your business logic will probably mostly 
 ```elixir
 defmodule MyApp.ProfileController do
   use MyApp.Web, :controller
-  use Crudblood.ResourcefulController
+  use Mudblood.ResourcefulController
 end
 ```
 

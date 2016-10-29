@@ -1,9 +1,9 @@
-defmodule Crudblood.Mixfile do
+defmodule Mudblood.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :crudblood,
+      app: :mudblood,
       version: "0.0.3",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env),
@@ -45,7 +45,7 @@ defmodule Crudblood.Mixfile do
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Dan Connor Consulting"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/onyxrev/crudblood"}
+      links: %{"GitHub" => "https://github.com/onyxrev/mudblood"}
     ]
   end
 

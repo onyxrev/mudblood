@@ -1,10 +1,10 @@
-defmodule Crudblood.ApiModel do
+defmodule Mudblood.ApiModel do
   defmacro __using__(_) do
     quote do
       import Ecto.Query
 
       def create(current_user, params) do
-        config = Crudblood.config(%{})
+        config = Mudblood.config(%{})
         changeset = __changeset(params, __empty_model)
 
         changeset
@@ -16,7 +16,7 @@ defmodule Crudblood.ApiModel do
       end
 
       def read_all(current_user, params \\ %{}) do
-        config = Crudblood.config(%{})
+        config = Mudblood.config(%{})
 
         __can?(__model, current_user, :read_all)
         |> case do
@@ -42,7 +42,7 @@ defmodule Crudblood.ApiModel do
       end
 
       def read(current_user, id) do
-        config = Crudblood.config(%{})
+        config = Mudblood.config(%{})
         resource = config.repo.get(__model, id)
 
         resource
@@ -54,7 +54,7 @@ defmodule Crudblood.ApiModel do
       end
 
       def update(current_user, params, id) do
-        config = Crudblood.config(%{})
+        config = Mudblood.config(%{})
         resource = config.repo.get(__model, id)
         changeset = __changeset(params, resource)
 
@@ -67,7 +67,7 @@ defmodule Crudblood.ApiModel do
       end
 
       def destroy(current_user, id) do
-        config = Crudblood.config(%{})
+        config = Mudblood.config(%{})
         resource = config.repo.get(__model, id)
 
         resource

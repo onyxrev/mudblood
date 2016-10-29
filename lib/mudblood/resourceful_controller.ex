@@ -1,4 +1,4 @@
-defmodule Crudblood.ResourcefulController do
+defmodule Mudblood.ResourcefulController do
   defmacro __using__(_) do
     quote do
       def index(conn, params) do
@@ -33,7 +33,7 @@ defmodule Crudblood.ResourcefulController do
             |> send_resp(:forbidden, "")
             |> halt
           {{:error, changeset}, _, nil} ->
-            changeset_view = Crudblood.config(%{}).changeset_view
+            changeset_view = Mudblood.config(%{}).changeset_view
 
             conn
             |> put_status(:unprocessable_entity)
@@ -102,7 +102,7 @@ defmodule Crudblood.ResourcefulController do
             |> send_resp(:forbidden, "")
             |> halt
           {{:error, changeset}, _, nil} ->
-            changeset_view = Crudblood.config(%{}).changeset_view
+            changeset_view = Mudblood.config(%{}).changeset_view
 
             conn
             |> put_status(:unprocessable_entity)
@@ -144,7 +144,7 @@ defmodule Crudblood.ResourcefulController do
       end
 
       defp __model(conn) do
-        app = Crudblood.config(%{}).app
+        app = Mudblood.config(%{}).app
 
         Code.eval_string("#{app}.#{__resource_string(conn)}") |> elem(0)
       end
