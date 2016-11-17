@@ -41,7 +41,7 @@ defmodule Mudblood.ResourcefulChannel do
         end
       end
 
-      defp show_resource(api_model, id, socket, clauses \\ []) do
+      defp __show_resource(api_model, id, socket, clauses \\ []) do
         current_resource = get_current_resource(socket)
 
         on_success = Keyword.get(clauses, :success, nil)
