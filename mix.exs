@@ -4,7 +4,7 @@ defmodule Mudblood.Mixfile do
   def project do
     [
       app: :mudblood,
-      version: "0.0.4",
+      version: "0.0.6",
       elixir: "~> 1.0",
       elixirc_paths: elixirc_paths(Mix.env),
       description: description,
@@ -35,8 +35,9 @@ defmodule Mudblood.Mixfile do
 
   defp deps do
     [
-      {:ecto, "~> 1.1.9"},
-      {:phoenix, "~> 1.2.0"}
+      {:ecto, "~> 2.0.0"},
+      {:phoenix, "~> 1.2.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 
