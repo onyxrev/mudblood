@@ -16,7 +16,7 @@ defmodule Mudblood.Model do
       end
 
       def __plural_name do
-        __table
+        __table()
       end
     end
   end
